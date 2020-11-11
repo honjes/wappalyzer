@@ -18,6 +18,14 @@
       "website": "https://michalsnik.github.io/aos/",
       "describe": "AOS is an Animate On Scroll Library"
     },
+    "Blueimp load image": {
+      "describe": "A JavaScript library to load and transform image files.",
+      "website": "https://github.com/blueimp/JavaScript-Load-Image",
+      "cats": [
+        19
+      ],
+      "scripts": "blueimp-load-image(@|/)([\\d.]+)(?:/js)?/load-image(?:\\.all)?(?:\\.min)?\\.js\\;version:\\2"
+    },
     "jQuery Transit": {
       "cats": [
         19
