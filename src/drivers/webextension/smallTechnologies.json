@@ -61,6 +61,17 @@
         "/rangeslider.js@([\\d.]+)/([a-z]+)/rangeslider(?:.min)?\\.(js|css)\\;version:\\1"
       ],
       "website": "https://rangeslider.js.org/"
+    },
+    "Typeit": {
+      "cats": [
+        17
+      ],
+      "icon": "typeit.png",
+      "scripts": "typeit(@|/)([\\d.]+)(?:(?:/dist)?/typeit(?:\\.es)?(?:\\.all)?(?:\\.min)?\\.js)?\\;version:\\2",
+      "website": [
+        "https://introjs.com",
+        "https://github.com/usablica/intro.js"
+      ]
     }
   }
 }
