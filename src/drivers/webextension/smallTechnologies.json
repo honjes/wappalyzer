@@ -26,6 +26,17 @@
       ],
       "scripts": "blueimp-load-image(@|/)([\\d.]+)(?:/js)?/load-image(?:\\.all)?(?:\\.min)?\\.js\\;version:\\2"
     },
+    "Intro.js": {
+      "cats": [
+        19
+      ],
+      "icon": "introjs.png",
+      "scripts": "intro.js(@|/)([\\d.]+)(?:/js)?/intro(?:-rtl)?(?:\\.all)?(?:\\.min)?\\.(js|css)(?:\\.map)?\\;version:\\2",
+      "website": [
+        "https://introjs.com",
+        "https://github.com/usablica/intro.js"
+      ]
+    },
     "jQuery Transit": {
       "cats": [
         19
