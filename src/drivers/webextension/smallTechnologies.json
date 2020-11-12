@@ -72,6 +72,20 @@
         "https://introjs.com",
         "https://github.com/usablica/intro.js"
       ]
+    },
+    "Crypto js": {
+      "description": "JavaScript library of crypto standards.",
+      "cats": [
+        16
+      ],
+      "scripts": "crypto-js(@|/)([\\d.]+)(?:(?:/dist)?/index(?:\\.es)?(?:\\.all)?(?:\\.min)?\\.js)?\\;version:\\2",
+      "website": [
+        "https://introjs.com",
+        "https://github.com/usablica/intro.js"
+      ],
+      "example-site": [
+        "https://app.roboflow.com/login"
+      ]
     }
   }
 }
