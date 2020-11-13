@@ -2,7 +2,7 @@ name: Sync Fork
 
 on:
   schedule:
-    - cron: '0 11 * * *' # every Day at 11 UTC
+    - cron: '10 * * * *' # every Day at 11 UTC
 
 jobs:
   sync:
