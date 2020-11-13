@@ -13,7 +13,7 @@ const { agent, promisify, getOption, setOption, open } = Utils
 
 const expiry = 1000 * 60 * 60 * 24
 
-const hostnameIgnoreList = /((local|dev(elop(ment)?)?|stag(e|ing)?|preprod|test(ing)?|demo(shop)?|admin|cache)[.-]|localhost|wappalyzer|google|facebook|twitter|reddit|yahoo|wikipedia|amazon|youtube|\/admin|\.local|\.test|\.dev|127\.|0\.)/
+const hostnameIgnoreList = /((local|dev(elop(ment)?)?|stag(e|ing)?|preprod|preview|test(ing)?|demo(shop)?|admin|cache)[.-]|localhost|wappalyzer|google|facebook|twitter|reddit|yahoo|wikipedia|amazon|youtube|\/admin|\.local|\.test|\.dev|^[0-9.]$)/
 
 const Driver = {
   lastPing: Date.now(),
@@ -54,15 +54,15 @@ const Driver = {
       ),
       tabs: {},
       robots: await getOption('robots', {}),
-      ads: await getOption('ads', []),
+      ads: {},
     }
 
     chrome.browserAction.setBadgeBackgroundColor({ color: '#6B39BD' }, () => {})
 
-    chrome.webRequest.onHeadersReceived.addListener(
-      Driver.onHeadersReceived,
+    chrome.webRequest.onCompleted.addListener(
+      Driver.onWebRequestComplete,
       { urls: ['http://*/*', 'https://*/*'], types: ['main_frame'] },
-      ['responseHeaders' /*, 'blocking' */]
+      ['responseHeaders']
     )
 
     chrome.tabs.onRemoved.addListener((id) => (Driver.cache.tabs[id] = null))
@@ -247,7 +247,7 @@ const Driver = {
    * Analyse response headers
    * @param {Object} request
    */
-  async onHeadersReceived(request) {
+  async onWebRequestComplete(request) {
     if (await Driver.isDisabledDomain(request.url)) {
       return
     }
@@ -256,6 +256,8 @@ const Driver = {
       const headers = {}
 
       try {
+        await new Promise((resolve) => setTimeout(resolve, 500))
+
         const [tab] = await promisify(chrome.tabs, 'query', {
           url: [request.url],
         })
@@ -462,10 +464,8 @@ const Driver = {
    * Callback for onAd listener
    * @param {Object} ad
    */
-  async onAd(ad) {
+  onAd(ad) {
     Driver.cache.ads.push(ad)
-
-    await setOption('ads', Driver.cache.ads)
   },
 
   /**
@@ -703,8 +703,6 @@ const Driver = {
 
       if (Driver.cache.ads.length > 50) {
         await Driver.post('https://ad.wappalyzer.com/log/wp/', Driver.cache.ads)
-
-        await setOption('ads', (Driver.cache.ads = []))
       }
     }
   },
