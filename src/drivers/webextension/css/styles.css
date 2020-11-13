@@ -44,6 +44,7 @@ a:hover {
   border-bottom: 1px solid var(--color-secondary);
   display: flex;
   height: 4.5rem;
+  justify-content: space-between;
 }
 
 .header__logo {
@@ -53,6 +54,20 @@ a:hover {
 
 .header__logo--dark {
   display: none;
+}
+
+.header__cta {
+  text-align: right;
+  margin-right: 1.5rem;
+  white-space: nowrap;
+}
+
+.header__open-in-new {
+  color: var(--color-primary);
+  height: 1.1rem;
+  margin-left: .1rem;
+  vertical-align: middle;
+  width: 1.1rem;
 }
 
 .footer {
@@ -78,7 +93,7 @@ a:hover {
 .alerts__icon {
   color: var(--color-primary);
   height: 1.1rem;
-  margin-right: .5rem;
+  margin-right: .3rem;
   vertical-align: text-bottom;
   width: 1.1rem;
 }
@@ -186,6 +201,19 @@ a:hover {
   margin-bottom: .2rem;
 }
 
+.technology__open-in-new {
+  color: var(--color-primary);
+  visibility: hidden;
+  height: 1.1rem;
+  margin-left: .1rem;
+  vertical-align: middle;
+  width: 1.1rem;
+}
+
+.technology__heading:hover .technology__open-in-new {
+  visibility: visible;
+}
+
 .technology__icon {
   height: 16px;
   margin-right: .5rem;
@@ -195,6 +223,17 @@ a:hover {
 
 .technology__link {
   color: var(--color-text);
+  display: block;
+  width: 100%;
+}
+
+.technology__link:hover {
+  text-decoration: none;
+}
+
+.technology__link:hover .technology__name {
+  border-bottom: 1px solid var(--color-primary);
+  color: var(--color-primary);
 }
 
 .technology__confidence {
@@ -208,7 +247,7 @@ a:hover {
   border-radius: 3px;
   font-size: .7rem;
   padding: .1rem .3rem;
-  margin-left: .4rem;
+  margin-left: .2rem;
   vertical-align: middle;
 }
 
@@ -305,6 +344,11 @@ a:hover {
     color: #fff
   }
 
+  .theme-mode .technology__link:hover .technology__name {
+    border-bottom: 1px solid var(--color-text-dark);
+    color: var(--color-text-dark);
+  }
+
   .theme-mode .technology__confidence {
   }
 
@@ -321,7 +365,19 @@ a:hover {
     color: var(--color-text-dark);
   }
 
+  .theme-mode .footer__icon {
+    color: #fff;
+  }
+
   .theme-mode .alerts__icon {
-    color:var(--color-text-dark);
+    color: #fff;
+  }
+
+  .theme-mode .header__open-in-new {
+    color: #fff;
+  }
+
+  .theme-mode .technology__open-in-new {
+    color: #fff;
   }
 }
