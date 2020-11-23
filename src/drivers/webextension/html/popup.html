@@ -19,7 +19,7 @@
       </a>
 
       <div class="header__cta">
-        <a href="https://www.wappalyzer.com/lists/?utm_source=popup&utm_medium=extension&utm_campaign=wappalyzer" data-i18n="leadLists"></a>
+        <a class="header__cta-link" href="https://www.wappalyzer.com/lists/?utm_source=popup&utm_medium=extension&utm_campaign=wappalyzer" data-i18n="leadLists"></a>
 
         <svg class="header__open-in-new" viewBox="0 0 24 24">
           <path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
@@ -34,7 +34,10 @@
     <div class="terms">
       <div class="terms__content" data-i18n="termsContent"></div>
 
-      <button class="terms__accept" data-i18n="termsAccept">&nbsp;</button>
+      <div class="terms__buttons">
+        <button class="terms__button terms__button--accept" data-i18n="termsAccept">&nbsp;</button>
+        <button class="terms__button terms__button--decline" data-i18n="termsDecline">&nbsp;</button>
+      </div>
 
       <a class="terms__privacy" href="https://www.wappalyzer.com/privacy/?utm_source=popup&utm_medium=extension&utm_campaign=wappalyzer" data-i18n="privacyPolicy"></a>
     </div>
@@ -69,10 +72,6 @@
           </span>
 
           <span class="technology__confidence">&nbsp;</span>
-
-          <svg class="technology__open-in-new" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
-          </svg>
         </a>
       </div>
     </div>
