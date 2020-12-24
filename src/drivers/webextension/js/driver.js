@@ -54,7 +54,7 @@ const Driver = {
       ),
       tabs: {},
       robots: await getOption('robots', {}),
-      ads: {},
+      ads: [],
     }
 
     chrome.browserAction.setBadgeBackgroundColor({ color: '#6B39BD' }, () => {})
@@ -451,9 +451,11 @@ const Driver = {
 
     await Driver.setIcon(url, resolved)
 
-    const tabs = await promisify(chrome.tabs, 'query', { url })
+    if (url) {
+      const tabs = await promisify(chrome.tabs, 'query', { url })
 
-    tabs.forEach(({ id }) => (Driver.cache.tabs[id] = resolved))
+      tabs.forEach(({ id }) => (Driver.cache.tabs[id] = resolved))
+    }
 
     Driver.log({ hostname, technologies: resolved })
 
@@ -487,6 +489,10 @@ const Driver = {
       )
 
       ;({ icon } = pinned || technologies[0] || { icon })
+    }
+
+    if (!url) {
+      return
     }
 
     ;(await promisify(chrome.tabs, 'query', { url })).forEach(
@@ -551,7 +557,7 @@ const Driver = {
       !(await getOption('tracking', true)) ||
       hostnameIgnoreList.test(hostname)
     ) {
-      return
+      return []
     }
 
     if (typeof Driver.cache.robots[hostname] !== 'undefined') {
@@ -693,7 +699,7 @@ const Driver = {
 
       const count = Object.keys(hostnames).length
 
-      if (count && (count >= 50 || Driver.lastPing < Date.now() - expiry)) {
+      if (count && (count >= 25 || Driver.lastPing < Date.now() - expiry)) {
         await Driver.post('https://api.wappalyzer.com/ping/v2/', hostnames)
 
         await setOption('hostnames', (Driver.cache.hostnames = {}))
@@ -701,8 +707,10 @@ const Driver = {
         Driver.lastPing = Date.now()
       }
 
-      if (Driver.cache.ads.length > 50) {
+      if (Driver.cache.ads.length > 25) {
         await Driver.post('https://ad.wappalyzer.com/log/wp/', Driver.cache.ads)
+
+        Driver.cache.ads = []
       }
     }
   },
