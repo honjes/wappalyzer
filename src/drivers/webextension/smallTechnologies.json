@@ -37,6 +37,18 @@
         "https://github.com/usablica/intro.js"
       ]
     },
+    "jQuery Mousewheel": {
+      "cats": [
+        19
+      ],
+      "description": "A jQuery plugin that adds cross-browser mouse wheel support.",
+      "icon": "jQuery.svg",
+      "implies": "jQuery",
+      "script": [
+        "jquery-mousewheel(/|@)([\\d.]+)/jquery\\.mousewheel(?:\\.min)?\\.js\\;version:\\2"
+      ],
+      "website": "https://github.com/jquery/jquery-mousewheel/"
+    },
     "jQuery Transit": {
       "cats": [
         19
@@ -61,6 +73,16 @@
         "/rangeslider.js@([\\d.]+)/([a-z]+)/rangeslider(?:.min)?\\.(js|css)\\;version:\\1"
       ],
       "website": "https://rangeslider.js.org/"
+    },
+    "Sidr": {
+      "cats": [
+        19
+      ],
+      "description": "Sidr is a jQuery plugin for creating side menus that are responsive.",
+      "icon": "jquery.svg",
+      "implies": "jQuery",
+      "scripts": "sidr(/|@)([\\d.]+)/(?:(dist|src)/)?jquery\\.sidr(?:\\.min)?\\.js\\;version:\\2",
+      "website": "https://www.berriart.com/sidr/"
     },
     "Typeit": {
       "cats": [
