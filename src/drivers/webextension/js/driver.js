@@ -117,14 +117,8 @@ const Driver = {
         await fetch(chrome.extension.getURL('technologies.json'))
       ).json()
 
-      const { technologies: smallTech, categories: smallCat } = await (
-        await fetch(chrome.extension.getURL('smallTechnologies.json'))
-      ).json()
-      console.log(smallTech)
-      console.log(Object.assign(technologies, smallTech))
-
-      setTechnologies(Object.assign(technologies, smallTech))
-      setCategories(Object.assign(categories, smallCat))
+      setTechnologies(technologies)
+      setCategories(categories)
     } catch (error) {
       Driver.error(error)
     }
