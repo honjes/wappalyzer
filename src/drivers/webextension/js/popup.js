@@ -15,18 +15,18 @@ const {
 function setDisabledDomain(enabled) {
   if (enabled) {
     document
-      .querySelector('.footer__switch--enabled')
-      .classList.add('footer__switch--hidden')
+      .querySelector('.header__switch--enabled')
+      .classList.add('header__switch--hidden')
     document
-      .querySelector('.footer__switch--disabled')
-      .classList.remove('footer__switch--hidden')
+      .querySelector('.header__switch--disabled')
+      .classList.remove('header__switch--hidden')
   } else {
     document
-      .querySelector('.footer__switch--enabled')
-      .classList.remove('footer__switch--hidden')
+      .querySelector('.header__switch--enabled')
+      .classList.remove('header__switch--hidden')
     document
-      .querySelector('.footer__switch--disabled')
-      .classList.add('footer__switch--hidden')
+      .querySelector('.header__switch--disabled')
+      .classList.add('header__switch--hidden')
   }
 }
 
@@ -95,7 +95,6 @@ const Popup = {
         })
     }
 
-    // Alert
     const tabs = await promisify(chrome.tabs, 'query', {
       active: true,
       currentWindow: true,
@@ -105,20 +104,12 @@ const Popup = {
       const [{ url }] = tabs
 
       if (url.startsWith('http')) {
-        document.querySelector('.alerts').classList.remove('alerts--hidden')
-
-        document.querySelector(
-          '.alerts__link'
-        ).href = `https://www.wappalyzer.com/alerts/?url=${encodeURIComponent(
-          `${url}`
-        )}&utm_source=popup&utm_medium=extension&utm_campaign=wappalyzer`
-
         const { hostname } = new URL(url)
 
         setDisabledDomain(disabledDomains.includes(hostname))
 
         document
-          .querySelector('.footer__switch--disabled')
+          .querySelector('.header__switch--disabled')
           .addEventListener('click', async () => {
             disabledDomains = disabledDomains.filter(
               (_hostname) => _hostname !== hostname
@@ -132,7 +123,7 @@ const Popup = {
           })
 
         document
-          .querySelector('.footer__switch--enabled')
+          .querySelector('.header__switch--enabled')
           .addEventListener('click', async () => {
             disabledDomains.push(hostname)
 
@@ -143,16 +134,14 @@ const Popup = {
             Popup.onGetDetections(await Popup.driver('getDetections'))
           })
       } else {
-        for (const el of document.querySelectorAll('.footer__switch')) {
-          el.classList.add('footer__switch--hidden')
+        for (const el of document.querySelectorAll('.header__switch')) {
+          el.classList.add('header__switch--hidden')
         }
-
-        document.querySelector('.alerts').classList.add('alerts--hidden')
       }
     }
 
     document
-      .querySelector('.footer__settings')
+      .querySelector('.header__settings')
       .addEventListener('click', () => chrome.runtime.openOptionsPage())
 
     // Apply internationalization
@@ -199,6 +188,10 @@ const Popup = {
    * @param {Array} detections
    */
   async onGetDetections(detections = []) {
+    detections = detections
+      .filter(({ confidence }) => confidence >= 50)
+      .filter(({ slug }) => slug !== 'cart-functionality')
+
     if (!detections || !detections.length) {
       document.querySelector('.empty').classList.remove('empty--hidden')
       document.querySelector('.detections').classList.add('detections--hidden')
@@ -252,9 +245,8 @@ const Popup = {
         })
       )
 
-      technologies
-        .filter(({ confidence }) => confidence >= 50)
-        .forEach(({ name, slug, confidence, version, icon, website }) => {
+      technologies.forEach(
+        ({ name, slug, confidence, version, icon, website }) => {
           const technologyNode = Popup.templates.technology.cloneNode(true)
 
           const image = technologyNode.querySelector('.technology__icon')
@@ -290,7 +282,8 @@ const Popup = {
           categoryNode
             .querySelector('.technologies')
             .appendChild(technologyNode)
-        })
+        }
+      )
 
       document.querySelector('.detections').appendChild(categoryNode)
     })
