@@ -51,6 +51,8 @@ const { technologies, categories } = JSON.parse(
 setTechnologies(technologies)
 setCategories(categories)
 
+const xhrDebounce = []
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
@@ -328,6 +330,26 @@ class Site {
 
     page.on('request', async (request) => {
       try {
+        if (request.resourceType() === 'xhr') {
+          let hostname
+
+          try {
+            ;({ hostname } = new URL(request.url()))
+          } catch (error) {
+            return
+          }
+
+          if (!xhrDebounce.includes(hostname)) {
+            xhrDebounce.push(hostname)
+
+            setTimeout(() => {
+              xhrDebounce.splice(xhrDebounce.indexOf(hostname), 1)
+
+              this.onDetect(analyze({ xhr: hostname }))
+            }, 1000)
+          }
+        }
+
         if (
           (responseReceived && request.isNavigationRequest()) ||
           request.frame() !== page.mainFrame() ||
@@ -367,8 +389,6 @@ class Site {
                 : [rawHeaders[key]]),
             ]
           })
-
-          this.contentType = headers['content-type'] || null
 
           if (response.status() >= 300 && response.status() < 400) {
             if (headers.location) {
@@ -690,7 +710,11 @@ class Site {
       }
 
       // Validate response
-      if (url.protocol !== 'file:' && !this.analyzedUrls[url.href].status) {
+      if (
+        url.protocol !== 'file:' &&
+        this.analyzedUrls[url.href] &&
+        !this.analyzedUrls[url.href].status
+      ) {
         await page.close()
 
         this.log('Page closed')
@@ -753,6 +777,10 @@ class Site {
     } catch (error) {
       if (error.constructor.name === 'TimeoutError') {
         throw new Error('The website took too long to respond')
+      }
+
+      if (error.message.includes('net::ERR_NAME_NOT_RESOLVED')) {
+        throw new Error('Hostname could not be resolved')
       }
 
       throw new Error(error.message)
